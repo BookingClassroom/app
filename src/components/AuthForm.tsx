@@ -16,7 +16,15 @@ import {
 import { Input } from "@/components/ui/input";
 
 const authSchema = z.object({
-  email: z.string().email("Email invalide"),
+  email: z
+    .string()
+    .min(5, "L'email doit contenir au moins 5 caractères")
+    .max(50, "L'email ne peut pas dépasser 50 caractères")
+    .email("Format d'email invalide")
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+      "L'email doit être valide (ex: exemple@mail.com)"
+    ),
   password: z
     .string()
     .min(6, "Le mot de passe doit faire au moins 6 caractères"),
