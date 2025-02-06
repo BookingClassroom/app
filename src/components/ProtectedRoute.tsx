@@ -11,8 +11,8 @@ const ProtectedRoute = ({
   const token = localStorage.getItem("access_token");
   const role = getUserRole();
 
-  if (!token) {
-    console.warn("🚫 Utilisateur non connecté, redirection vers /auth");
+  if (!token || role === null) {
+    console.warn("🚫 Utilisateur sans rôle détecté, redirection vers /auth");
     return <Navigate to="/auth" />;
   }
 

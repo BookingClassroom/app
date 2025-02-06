@@ -38,15 +38,15 @@ const RlyImportantComponent = () => {
     const end = Date.now() + duration;
 
     const colors = [
-      ["#ff0a54", "#ff477e", "#ff7096", "#ff85a1", "#ff99ac"], // Rose / rouge
-      ["#006eff", "#00bfff", "#0096c7", "#5bc0eb", "#002855"], // Bleu
-      ["#ffcc00", "#ff9900", "#ff6600", "#ff4400", "#cc2200"], // Jaune / Orange
-      ["#00ff66", "#00cc44", "#009933", "#00802b", "#004d1a"], // Vert
-      ["#800080", "#a020f0", "#dda0dd", "#e6a8d7", "#663399"], // Violet
+      ["#ff0a54", "#ff477e", "#ff7096", "#ff85a1", "#ff99ac"],
+      ["#006eff", "#00bfff", "#0096c7", "#5bc0eb", "#002855"],
+      ["#ffcc00", "#ff9900", "#ff6600", "#ff4400", "#cc2200"],
+      ["#00ff66", "#00cc44", "#009933", "#00802b", "#004d1a"],
+      ["#800080", "#a020f0", "#dda0dd", "#e6a8d7", "#663399"],
     ];
 
     const frame = () => {
-      const colorSet = colors[Math.floor(Math.random() * colors.length)]; // Choisir un set de couleurs aléatoire
+      const colorSet = colors[Math.floor(Math.random() * colors.length)];
 
       confetti({
         particleCount: 10,

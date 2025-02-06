@@ -16,7 +16,6 @@ import {
   updateClassroom,
 } from "@/services/classrooms.service";
 
-// ✅ Définition du schéma de validation avec `zod`
 const classroomSchema = z.object({
   name: z.string().min(3, "Le nom doit contenir au moins 3 caractères"),
   capacity: z
@@ -41,7 +40,7 @@ const ClassroomForm = ({
     defaultValues: {
       name: classroom?.name || "",
       capacity: classroom?.capacity || 10,
-      equipments: classroom?.equipments?.join(", ") || "", // Convertit un tableau en string séparé par des virgules
+      equipments: classroom?.equipments?.join(", ") || "",
     },
   });
 
@@ -50,7 +49,7 @@ const ClassroomForm = ({
       ...data,
       equipments: data.equipments
         ? data.equipments.split(",").map((eq: string) => eq.trim())
-        : [], // Conversion en tableau
+        : [],
     };
 
     if (isEditing) {
