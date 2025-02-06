@@ -1,14 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AuthForm from "./pages/AuthForm";
+import AuthPage from "./pages/AuthFormPage";
+import ClassroomPage from "./pages/ClassroomPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<h1>Accueil</h1>} />
-        <Route path="/auth" element={<AuthForm />} />
-      </Routes>
-    </Router>
+    <>
+      <Toaster position="top-right" />
+      <Router>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+
+          <Route
+            path="/classrooms"
+            element={
+              <ProtectedRoute>
+                <ClassroomPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/" element={<h1>Accueil</h1>} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 

@@ -18,7 +18,6 @@ export const signin = async (
     }
 
     const data = await response.json();
-    console.log("✅ Token reçu :", data.access_token);
 
     const accessToken = data.access_token?.trim();
     if (accessToken) {
@@ -66,4 +65,23 @@ export const signout = () => {
 export const isAuthenticated = (): boolean => {
   const token = localStorage.getItem("access_token");
   return !!token;
+};
+
+export const getUserRole = (): string => {
+  const token = localStorage.getItem("access_token");
+  if (!token) return "user";
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    const roles = payload.roles;
+    if (Array.isArray(roles) && roles.length > 0) {
+      return roles[0];
+    }
+
+    return roles ?? "user";
+  } catch (error) {
+    console.error("❌ Erreur lors de la récupération du rôle :", error);
+    return "user";
+  }
 };
