@@ -34,7 +34,8 @@ export const signin = async (
 export const signup = async (
   email: string,
   password: string,
-  fullName: string
+  firstname: string,
+  lastname: string
 ): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
@@ -42,7 +43,7 @@ export const signup = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, fullName }),
+      body: JSON.stringify({ email, password, firstname, lastname }),
     });
 
     if (!response.ok) {

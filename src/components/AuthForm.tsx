@@ -16,6 +16,14 @@ import {
 import { Input } from "@/components/ui/input";
 
 const authSchema = z.object({
+  firstname: z
+    .string()
+    .min(2, "Le prénom doit contenir au moins 2 caractères")
+    .max(50, "Le prénom ne peut pas dépasser 50 caractères"),
+  lastname: z
+    .string()
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .max(50, "Le nom ne peut pas dépasser 50 caractères"),
   email: z
     .string()
     .min(5, "L'email doit contenir au moins 5 caractères")
@@ -37,6 +45,8 @@ const AuthForm = () => {
   const form = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
     },
@@ -53,7 +63,12 @@ const AuthForm = () => {
         setError("Identifiants incorrects. Veuillez réessayer.");
       }
     } else {
-      const success = await signup(data.email, data.password, "John Doe");
+      const success = await signup(
+        data.email,
+        data.password,
+        data.firstname,
+        data.lastname
+      );
       if (success) {
         navigate("/");
       } else {
@@ -71,6 +86,40 @@ const AuthForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* Prénom */}
+          {!isLogin && (
+            <FormField
+              control={form.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Prénom</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Votre prénom" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {/* Nom */}
+          {!isLogin && (
+            <FormField
+              control={form.control}
+              name="lastname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Votre nom" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
           <FormField
             control={form.control}
             name="email"
