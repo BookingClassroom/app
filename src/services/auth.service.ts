@@ -7,30 +7,27 @@ export const signin = async (
   try {
     const response = await fetch(`${API_BASE_URL}/auth/signin`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      console.error("Signin error:", error.message || "Unknown error");
+      console.error("❌ Signin error :", error.message || "Unknown error");
       return null;
     }
 
     const data = await response.json();
-    const accessToken = data.access_token?.trim().replace(/^"|"$/g, "");
+    console.log("✅ Token reçu :", data.access_token);
 
+    const accessToken = data.access_token?.trim();
     if (accessToken) {
       localStorage.setItem("access_token", accessToken);
       return accessToken;
     } else {
-      console.error("Signin response missing access_token");
       return null;
     }
   } catch (error) {
-    console.error("Signin error:", error);
     return null;
   }
 };

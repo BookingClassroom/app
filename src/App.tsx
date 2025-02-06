@@ -1,13 +1,14 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthForm from "./pages/AuthForm";
 
 function App() {
   return (
-    <>
-      <div>
-        <h1 className="text-5xl font-bold underline">Hello World !</h1>
-        <Button className="ml-5"> Click me !</Button>
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<h1>Accueil</h1>} />
+        <Route path="/auth" element={<AuthForm />} />
+      </Routes>
+    </Router>
   );
 }
 
