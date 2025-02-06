@@ -15,28 +15,42 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const authSchema = z.object({
-  email: z
-    .string()
-    .min(5, "L'email doit contenir au moins 5 caractères")
-    .max(50, "L'email ne peut pas dépasser 50 caractères")
-    .email("Format d'email invalide")
-    .regex(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-      "L'email doit être valide (ex: exemple@mail.com)"
-    ),
-  password: z
-    .string()
-    .min(6, "Le mot de passe doit faire au moins 6 caractères"),
-});
+const authSchema = z
+  .object({
+    firstname: z
+      .string()
+      .min(2, "Le prénom doit contenir au moins 2 caractères")
+      .max(50, "Le prénom ne peut pas dépasser 50 caractères")
+      .optional(),
+    lastname: z
+      .string()
+      .min(2, "Le nom doit contenir au moins 2 caractères")
+      .max(50, "Le nom ne peut pas dépasser 50 caractères")
+      .optional(),
+    email: z
+      .string()
+      .min(5, "L'email doit contenir au moins 5 caractères")
+      .max(50, "L'email ne peut pas dépasser 50 caractères")
+      .email("Format d'email invalide"),
+    password: z
+      .string()
+      .min(6, "Le mot de passe doit faire au moins 6 caractères"),
+  })
+  .refine((data) => data.firstname && data.lastname, {
+    message: "Prénom et nom requis",
+    path: ["firstname", "lastname"],
+  });
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
+      firstname: "not needed ",
+      lastname: "not needed ",
       email: "",
       password: "",
     },
@@ -46,16 +60,28 @@ const AuthForm = () => {
     setError(null);
 
     if (isLogin) {
-      const token = await signin(data.email, data.password);
+      const { email, password } = data;
+
+      const token = await signin(email, password);
       if (token) {
         navigate("/");
       } else {
         setError("Identifiants incorrects. Veuillez réessayer.");
       }
     } else {
-      const success = await signup(data.email, data.password, "John Doe");
+      const success = await signup(
+        data.email,
+        data.password,
+        data.firstname,
+        data.lastname
+      );
       if (success) {
-        navigate("/");
+        const token = await signin(data.email, data.password);
+        if (token) {
+          navigate("/");
+        } else {
+          setError("Échec de l'authentification après inscription.");
+        }
       } else {
         setError("Échec de l'inscription. Essayez avec un autre email.");
       }
@@ -71,6 +97,42 @@ const AuthForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* Afficher prénom et nom uniquement pour l'inscription */}
+          {!isLogin && (
+            <>
+              <FormField
+                control={form.control}
+                name="firstname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Prénom</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Votre prénom"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nom</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Votre nom" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
+
           <FormField
             control={form.control}
             name="email"
@@ -106,6 +168,7 @@ const AuthForm = () => {
           </Button>
         </form>
       </Form>
+
       <p className="text-gray-600 mt-4 text-center">
         {isLogin ? (
           <>

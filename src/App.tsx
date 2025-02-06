@@ -3,15 +3,16 @@ import AuthPage from "./pages/AuthFormPage";
 import ClassroomPage from "./pages/ClassroomPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
+import RlyImportantComponent from "./components/RlyImportantComponent";
 
 function App() {
   return (
     <>
       <Toaster position="top-right" />
+      <RlyImportantComponent />
       <Router>
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
-
           <Route
             path="/classrooms"
             element={

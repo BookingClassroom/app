@@ -13,7 +13,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { toast } from "react-hot-toast"; // 📢 Pour afficher un message après suppression
+import { toast } from "react-hot-toast";
 
 const ClassroomPage = () => {
   const [classrooms, setClassrooms] = useState([]);
@@ -30,7 +30,7 @@ const ClassroomPage = () => {
 
   const handleDelete = async (id: number) => {
     await deleteClassroom(id);
-    toast.success("Salle supprimée avec succès !"); // ✅ Afficher un message après suppression
+    toast.success("Salle supprimée avec succès !");
     fetchClassrooms();
   };
 
