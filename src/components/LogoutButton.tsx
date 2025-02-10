@@ -6,9 +6,9 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); // 🔥 Supprime le token
+    localStorage.removeItem("access_token");
     toast.success("👋 Déconnexion réussie !");
-    navigate("/auth"); // 🔄 Redirige vers la page d'authentification
+    navigate("/auth");
   };
 
   return (

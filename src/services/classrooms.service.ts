@@ -109,3 +109,56 @@ export const deleteClassroom = async (id: number): Promise<boolean> => {
     return false;
   }
 };
+
+export const fetchClassrooms = async () => {
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("Utilisateur non connecté");
+
+    const response = await fetch(`${API_BASE_URL}/classrooms`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des salles");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("❌ Erreur fetchClassrooms:", error);
+    return null;
+  }
+};
+
+export const fetchClassroomById = async (id: string | undefined) => {
+  if (!id) return null;
+
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) throw new Error("Utilisateur non connecté");
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/classrooms/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error("❌ Erreur API: ", response.status, await response.text());
+      throw new Error("Salle introuvable");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("❌ Erreur fetchClassroomById:", error);
+    return null;
+  }
+};

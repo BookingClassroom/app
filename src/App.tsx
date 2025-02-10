@@ -10,6 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import RlyImportantComponent from "./components/RlyImportantComponent";
 import LogoutButton from "./components/LogoutButton";
+import HomePage from "./pages/HomePage";
+import ClassroomDetailsPage from "./pages/ClassroomDetailsPage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -19,8 +21,6 @@ const AppContent = () => {
     <>
       <Toaster position="top-right" />
       <RlyImportantComponent />
-
-      {/* ✅ Cache la div complète si on est sur /auth ou si l'utilisateur n'est pas connecté */}
       {token && location.pathname !== "/auth" && (
         <div className="p-6 flex justify-end">
           <LogoutButton />
@@ -37,7 +37,8 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<h1>Accueil</h1>} />
+        <Route path="/classroom/:id" element={<ClassroomDetailsPage />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </>
   );

@@ -13,13 +13,11 @@ const ProtectedRoute = ({
   const [redirect, setRedirect] = useState(false);
   const token = localStorage.getItem("access_token");
   const role = getUserRole();
-  const toastDisplayed = useRef(false); // ✅ Bloque les toasts en double
+  const toastDisplayed = useRef(false);
 
   useEffect(() => {
     if (!toastDisplayed.current) {
-      // ✅ Empêche l'affichage multiple
       if (!token || role === null) {
-        console.log("getUserRole", getUserRole);
         toast.error("🔒 Accès restreint aux administrateurs.");
         toastDisplayed.current = true;
         setTimeout(() => setRedirect(true), 100);
