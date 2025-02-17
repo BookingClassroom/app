@@ -41,7 +41,7 @@ const SigninForm = () => {
 
     if (token) {
       toast.success("✅ Connexion réussie !");
-      navigate("/");
+      navigate("/classroom");
     } else {
       toast.error("❌ Identifiants incorrects.");
       setError("Identifiants incorrects.");

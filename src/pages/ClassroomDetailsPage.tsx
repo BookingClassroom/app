@@ -51,8 +51,11 @@ const ClassroomDetailsPage = () => {
           <p>
             <strong>Statut :</strong> {classroom.status || "Indisponible"}
           </p>
-          <Button className="mt-4 w-full" onClick={() => navigate(-1)}>
-            Retour
+          <Button
+            className="mt-4 w-full"
+            onClick={() => navigate("/reservation")}
+          >
+            Réserver
           </Button>
         </CardContent>
       </Card>
