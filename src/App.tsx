@@ -12,6 +12,7 @@ import RlyImportantComponent from "./components/RlyImportantComponent";
 import LogoutButton from "./components/LogoutButton";
 import HomePage from "./pages/HomePage";
 import ClassroomDetailsPage from "./pages/ClassroomDetailsPage";
+import ManageClassroomsButton from "./components/AdminButton";
 
 const AppContent = () => {
   const location = useLocation();
@@ -22,7 +23,8 @@ const AppContent = () => {
       <Toaster position="top-right" />
       <RlyImportantComponent />
       {token && location.pathname !== "/auth" && (
-        <div className="p-6 flex justify-end">
+        <div className="p-6 flex justify-end gap-4">
+          <ManageClassroomsButton />
           <LogoutButton />
         </div>
       )}
