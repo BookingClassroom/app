@@ -13,6 +13,8 @@ import LogoutButton from "./components/LogoutButton";
 import HomePage from "./pages/HomePage";
 import ClassroomDetailsPage from "./pages/ClassroomDetailsPage";
 import ManageClassroomsButton from "./components/AdminButton";
+import ReservationPage from "./pages/ReservationPage";
+import ClassroomListPage from "./pages/ClassroomListPage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -41,6 +43,8 @@ const AppContent = () => {
         />
         <Route path="/classroom/:id" element={<ClassroomDetailsPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/classroom" element={<ClassroomListPage />} />
+        <Route path="/reservation" element={<ReservationPage />} />
       </Routes>
     </>
   );
