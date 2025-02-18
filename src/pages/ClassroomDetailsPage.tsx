@@ -53,7 +53,7 @@ const ClassroomDetailsPage = () => {
           </p>
           <Button
             className="mt-4 w-full"
-            onClick={() => navigate("/reservation")}
+            onClick={() => navigate(`/reservation?classroomId=${classroom.id}`)}
           >
             Réserver
           </Button>

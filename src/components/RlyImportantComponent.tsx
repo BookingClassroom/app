@@ -14,7 +14,7 @@ const RlyImportantComponent = () => {
     "ArrowLeft",
     "ArrowRight",
   ];
-  const [input, setInput] = useState<string[]>([]);
+  const [_input, setInput] = useState<string[]>([]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   fetchReservationsForClassroom,
   createReservation,
@@ -44,16 +45,18 @@ const convertToUTC = (date: Date, time: string) => {
 };
 
 const ReservationPage = () => {
+  const [searchParams] = useSearchParams();
+  const classroomIdFromURL = searchParams.get("classroomId");
+
   const [classrooms, setClassrooms] = useState<any[]>([]);
   const [selectedClassroom, setSelectedClassroom] = useState<number | null>(
-    null
+    classroomIdFromURL ? Number(classroomIdFromURL) : null
   );
   const [reservations, setReservations] = useState<any[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [startTime, setStartTime] = useState<string | null>(null);
   const [endTime, setEndTime] = useState<string | null>(null);
   const [selectedEquipments, setSelectedEquipments] = useState<string[]>([]);
-
   useEffect(() => {
     const loadClassrooms = async () => {
       const data = await fetchClassrooms();
@@ -91,7 +94,6 @@ const ReservationPage = () => {
       loadReservations();
     }
   }, [selectedClassroom, selectedDate, classrooms]);
-
   const isSlotUnavailable = (slot: string) => {
     if (!selectedDate) return false;
 
@@ -138,7 +140,6 @@ const ReservationPage = () => {
       toast.error("Erreur lors de la réservation.");
     }
   };
-
   return (
     <div className="container mx-auto p-6">
       <Card className="max-w-lg mx-auto shadow-md border rounded-lg p-6">
@@ -162,8 +163,6 @@ const ReservationPage = () => {
               ))}
             </SelectContent>
           </Select>
-
-          {/* ✅ Affichage des équipements immédiatement après sélection de la salle */}
           {selectedClassroom && (
             <div className="p-4 bg-gray-100 border rounded-md">
               <h3 className="text-lg font-semibold">
@@ -181,8 +180,8 @@ const ReservationPage = () => {
             </div>
           )}
 
-          {/* Sélection de la date */}
           <div className="border rounded-md p-3">
+            {/* Sélection de la date */}
             <Calendar
               mode="single"
               selected={selectedDate}
