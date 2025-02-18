@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 import { format, isWithinInterval } from "date-fns";
 import { fr } from "date-fns/locale";
 
-// 📌 Fonction pour générer les créneaux horaires (9h - 17h, toutes les 30 min)
 const generateTimeSlots = () => {
   const slots = [];
   let current = new Date();
@@ -27,7 +26,6 @@ const generateTimeSlots = () => {
   end.setHours(17, 0, 0, 0);
 
   while (current <= end) {
-    // ✅ Change `<` en `<=` pour inclure 17h
     slots.push(format(new Date(current), "HH:mm"));
     current.setMinutes(current.getMinutes() + 30);
   }
@@ -35,7 +33,6 @@ const generateTimeSlots = () => {
   return slots;
 };
 
-// 📌 Fonction pour convertir une heure locale en UTC
 const convertToUTC = (date: Date, time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   const newDate = new Date(date);
@@ -68,7 +65,6 @@ const ReservationPage = () => {
 
   useEffect(() => {
     if (selectedClassroom) {
-      // 📌 Mise à jour des équipements dès qu'on choisit une salle
       const selectedRoom = classrooms.find(
         (room) => room.id === selectedClassroom
       );
@@ -82,7 +78,7 @@ const ReservationPage = () => {
           data
             .map((res) => ({
               ...res,
-              startTime: new Date(res.startTime), // 📌 Conversion UTC correcte
+              startTime: new Date(res.startTime),
               endTime: new Date(res.endTime),
             }))
             .filter(
@@ -96,7 +92,6 @@ const ReservationPage = () => {
     }
   }, [selectedClassroom, selectedDate, classrooms]);
 
-  // 📌 Vérifier si un créneau est indisponible en convertissant en UTC
   const isSlotUnavailable = (slot: string) => {
     if (!selectedDate) return false;
 
@@ -110,7 +105,6 @@ const ReservationPage = () => {
     });
   };
 
-  // 📌 Fonction pour obtenir les heures de fin valides après sélection de l'heure de début
   const getAvailableEndTimes = () => {
     if (!startTime) return [];
     return generateTimeSlots().filter(
@@ -118,7 +112,6 @@ const ReservationPage = () => {
     );
   };
 
-  // ✅ Fonction pour réserver une salle
   const handleReserve = async () => {
     if (!selectedClassroom || !selectedDate || !startTime || !endTime) {
       toast.error(
