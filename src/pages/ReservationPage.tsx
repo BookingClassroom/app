@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import toast from "react-hot-toast";
-import { format, parse, isWithinInterval } from "date-fns";
+import { format, isWithinInterval } from "date-fns";
 import { fr } from "date-fns/locale";
 
 // 📌 Fonction pour générer les créneaux horaires (9h - 17h, toutes les 30 min)
@@ -26,7 +26,8 @@ const generateTimeSlots = () => {
   const end = new Date();
   end.setHours(17, 0, 0, 0);
 
-  while (current < end) {
+  while (current <= end) {
+    // ✅ Change `<` en `<=` pour inclure 17h
     slots.push(format(new Date(current), "HH:mm"));
     current.setMinutes(current.getMinutes() + 30);
   }

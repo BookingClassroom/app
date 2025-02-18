@@ -15,6 +15,7 @@ import ClassroomDetailsPage from "./pages/ClassroomDetailsPage";
 import ManageClassroomsButton from "./components/AdminButton";
 import ReservationPage from "./pages/ReservationPage";
 import ClassroomListPage from "./pages/ClassroomListPage";
+import MyReservationsPage from "./pages/MyReservationPage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -41,6 +42,7 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/my-reservations" element={<MyReservationsPage />} />
         <Route path="/classroom/:id" element={<ClassroomDetailsPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/classroom" element={<ClassroomListPage />} />
