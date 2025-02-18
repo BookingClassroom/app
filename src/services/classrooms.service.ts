@@ -110,12 +110,29 @@ export const deleteClassroom = async (id: number): Promise<boolean> => {
   }
 };
 
-export const fetchClassrooms = async () => {
+export const fetchClassrooms = async (filters?: {
+  capacity?: string;
+  status?: string;
+  equipments?: string[];
+}) => {
   try {
     const token = localStorage.getItem("access_token");
     if (!token) throw new Error("Utilisateur non connecté");
 
-    const response = await fetch(`${API_BASE_URL}/classrooms`, {
+    let url = `${API_BASE_URL}/classrooms/filter`;
+
+    const queryParams = new URLSearchParams();
+    if (filters?.capacity) queryParams.append("minCapacity", filters.capacity);
+    if (filters?.status) queryParams.append("status", filters.status);
+    if (filters?.equipments) {
+      filters.equipments.forEach((eq) => queryParams.append("equipments", eq));
+    }
+
+    if (queryParams.toString()) {
+      url += `?${queryParams.toString()}`;
+    }
+
+    const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

@@ -36,13 +36,11 @@ const generateTimeSlots = () => {
   return slots;
 };
 
-// ✅ Convertir une date UTC en heure locale
 const convertFromUTC = (utcString: string) => {
   const date = new Date(utcString);
   return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 };
 
-// ✅ Convertir une heure locale en UTC avant envoi à l'API
 const convertToUTC = (date: Date, time: string) => {
   const [hours, minutes] = time.split(":").map(Number);
   const newDate = new Date(date);
@@ -71,7 +69,6 @@ const MyReservationsPage = () => {
       const loadReservations = async () => {
         const data = await fetchUserReservations(userId);
 
-        // ✅ Convertir les dates UTC avant de les afficher
         const formattedReservations = data.map((res: any) => ({
           ...res,
           startTime: convertFromUTC(res.startTime),
