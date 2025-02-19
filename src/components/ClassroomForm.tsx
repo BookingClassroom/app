@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -16,13 +17,21 @@ import {
   updateClassroom,
 } from "@/services/classrooms.service";
 
+const availableEquipments = [
+  "Projecteur",
+  "Tableau blanc",
+  "WiFi",
+  "Climatisation",
+  "PC",
+];
+
 const classroomSchema = z.object({
   name: z.string().min(3, "Le nom doit contenir au moins 3 caractères"),
   capacity: z
     .number()
     .min(1, "Capacité minimum : 1")
     .max(200, "Capacité max : 200"),
-  equipments: z.string().optional(),
+  equipments: z.array(z.string()).optional(),
 });
 
 const ClassroomForm = ({
@@ -40,26 +49,15 @@ const ClassroomForm = ({
     defaultValues: {
       name: classroom?.name || "",
       capacity: classroom?.capacity || 10,
-      equipments: classroom?.equipments?.join(", ") || "",
+      equipments: classroom?.equipments || [],
     },
   });
 
   const onSubmit = async (data: any) => {
-    const formattedData = {
-      ...data,
-      equipments: data.equipments
-        ? data.equipments.split(",").map((eq: string) => eq.trim())
-        : [],
-    };
-
     if (isEditing) {
-      await updateClassroom(classroom.id, formattedData);
+      await updateClassroom(classroom.id, data);
     } else {
-      await createClassroom(
-        formattedData.name,
-        formattedData.capacity,
-        formattedData.equipments
-      );
+      await createClassroom(data.name, data.capacity, data.equipments);
     }
 
     setOpen(false);
@@ -91,13 +89,30 @@ const ClassroomForm = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">
-              Équipements (séparés par des virgules)
-            </label>
-            <Input
-              {...form.register("equipments")}
-              placeholder="Tableau, Projecteur, WiFi"
-            />
+            <label className="block text-sm font-medium">Équipements</label>
+            <div className="space-y-2">
+              {availableEquipments.map((eq) => (
+                <div key={eq} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={eq}
+                    checked={form.watch("equipments")?.includes(eq)}
+                    onCheckedChange={(checked) => {
+                      const currentEquipments =
+                        form.getValues("equipments") || [];
+                      form.setValue(
+                        "equipments",
+                        checked
+                          ? [...currentEquipments, eq]
+                          : currentEquipments.filter((e) => e !== eq)
+                      );
+                    }}
+                  />
+                  <label htmlFor={eq} className="text-sm">
+                    {eq}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
           <Button type="submit" className="w-full">
             {isEditing ? "Mettre à jour" : "Créer"}
