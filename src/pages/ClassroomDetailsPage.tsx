@@ -48,9 +48,6 @@ const ClassroomDetailsPage = () => {
             <strong>Équipements :</strong>{" "}
             {classroom.equipments?.join(", ") || "Aucun"}
           </p>
-          <p>
-            <strong>Statut :</strong> {classroom.status || "Indisponible"}
-          </p>
           <Button
             className="mt-4 w-full"
             onClick={() => navigate(`/reservation?classroomId=${classroom.id}`)}

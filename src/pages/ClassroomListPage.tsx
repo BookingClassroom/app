@@ -23,7 +23,7 @@ const ClassroomListPage = () => {
   const availableEquipments = [
     "Projecteur",
     "Tableau blanc",
-    "Wifi",
+    "WiFi",
     "Climatisation",
     "PCs",
   ];
@@ -122,11 +122,7 @@ const ClassroomListPage = () => {
               equipments: selectedEquipments,
             })
           }
-        >
-          <option value="all">Tous les statuts</option>
-          <option value="disponible">Disponible</option>
-          <option value="occupé">Occupé</option>
-        </Select>
+        ></Select>
       </div>
 
       {/* ✅ Liste des équipements (checkbox) */}
@@ -169,9 +165,6 @@ const ClassroomListPage = () => {
                 <p>
                   <strong>Équipements :</strong>{" "}
                   {room.equipments?.join(", ") || "Aucun"}
-                </p>
-                <p>
-                  <strong>Statut :</strong> {room.status || "Indisponible"}
                 </p>
                 <Button
                   className="mt-4 w-full"
