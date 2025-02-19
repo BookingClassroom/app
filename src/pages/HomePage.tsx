@@ -6,27 +6,30 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <Card className="max-w-3xl text-center shadow-lg border rounded-lg p-8 bg-white">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background via-muted to-primary/20 p-6">
+      {/* Ajout d'un effet visuel dynamique */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
+
+      <Card className="max-w-3xl text-center shadow-2xl border border-border rounded-2xl p-10 bg-card backdrop-blur-lg">
         <CardHeader>
-          <CardTitle className="text-4xl font-bold text-gray-800">
+          <CardTitle className="text-5xl font-extrabold text-primary drop-shadow-md">
             Bienvenue sur BookingClassroom
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-gray-600 text-lg leading-relaxed">
+        <CardContent className="text-foreground text-lg leading-relaxed">
           <p>
             BookingClassroom est une plateforme de réservation de salles
             simplifiée pour les étudiants. Réservez un créneau en quelques
             clics.
           </p>
-          <p className="mt-4 font-medium text-gray-700">
+          <p className="mt-6 font-semibold text-secondary-foreground">
             Connectez-vous pour accéder aux fonctionnalités de réservation !
           </p>
 
-          {/* Bouton pour rediriger vers l'authentification */}
-          <div className="mt-6 flex justify-center">
+          {/* Bouton stylisé avec animation */}
+          <div className="mt-8 flex justify-center">
             <Button
-              className="px-6 py-3 text-lg"
+              className="px-8 py-3 text-lg font-semibold bg-primary text-primary-foreground rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-out"
               onClick={() => navigate("/auth")}
             >
               Se connecter / S'inscrire

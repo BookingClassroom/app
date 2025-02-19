@@ -40,10 +40,10 @@ const SigninForm = () => {
     const token = await signin(data.email, data.password);
 
     if (token) {
-      toast.success("✅ Connexion réussie !");
+      toast.success("Connexion réussie !");
       navigate("/classroom");
     } else {
-      toast.error("❌ Identifiants incorrects.");
+      toast.error("Identifiants incorrects.");
       setError("Identifiants incorrects.");
     }
   };
