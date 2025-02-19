@@ -15,7 +15,6 @@ const ClassroomListPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  // 🔹 Récupération des filtres depuis l'URL
   const capacityFilter = searchParams.get("minCapacity") || "";
   const statusFilter = searchParams.get("status") || null;
   const selectedEquipments = searchParams.getAll("equipments");
@@ -25,12 +24,11 @@ const ClassroomListPage = () => {
     "Tableau blanc",
     "Wifi",
     "Climatisation",
-    "PCs",
+    "Pc",
   ];
 
-  // 🔹 Fonction pour charger les salles avec les filtres dynamiques
   const loadClassrooms = async () => {
-    setIsLoading(true); // Débute le chargement
+    setIsLoading(true);
     const data = await fetchClassrooms({
       capacity: capacityFilter,
       status: statusFilter,
@@ -40,23 +38,22 @@ const ClassroomListPage = () => {
     if (data) {
       setClassrooms(data);
     } else {
-      setClassrooms([]); // ⚠️ Assurez-vous qu’on ne laisse pas un état instable
+      setClassrooms([]);
       toast.error("Erreur lors du chargement des salles.");
     }
 
-    setIsLoading(false); // Fin du chargement
+    setIsLoading(false);
   };
   const firstRender = useRef(true);
 
-  // 🔹 useEffect : Recharge les salles à chaque changement de filtre
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
-      return; // 🔹 Bloque le premier appel
+      return;
     }
 
     loadClassrooms();
-  }, [searchParams]); // 🔹 Regarde directement les URL params
+  }, [searchParams]);
 
   const areFiltersEqual = (currentParams: URLSearchParams, newFilters: any) => {
     return (
@@ -67,7 +64,6 @@ const ClassroomListPage = () => {
     );
   };
 
-  // 🔹 Mettre à jour les filtres dans l'URL
   const updateFilters = (newFilters: {
     capacity?: string;
     status?: string | null;
@@ -75,7 +71,6 @@ const ClassroomListPage = () => {
   }) => {
     const currentParams = new URLSearchParams(searchParams);
 
-    // 🔹 Vérifie si les filtres sont déjà appliqués
     if (areFiltersEqual(currentParams, newFilters)) return;
 
     const params = new URLSearchParams();
@@ -90,13 +85,13 @@ const ClassroomListPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-semibold text-center mb-6">
+    <div className="container mx-auto p-6 bg-gradient-to-br from-background via-muted to-primary/10 min-h-screen">
+      <h1 className="text-4xl font-extrabold text-center text-primary mb-8 drop-shadow-lg">
         Liste des Salles
       </h1>
 
       {/* ✅ Filtres */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-4 mb-8 p-4 bg-card shadow-md rounded-lg">
         {/* 🔹 Capacité */}
         <Input
           type="number"
@@ -109,7 +104,7 @@ const ClassroomListPage = () => {
               equipments: selectedEquipments,
             })
           }
-          className="w-full md:w-1/3"
+          className="w-full md:w-1/3 border border-border p-2 rounded-lg shadow-sm"
         />
 
         {/* 🔹 Statut */}
@@ -122,24 +117,19 @@ const ClassroomListPage = () => {
               equipments: selectedEquipments,
             })
           }
-        >
-          <option value="all">Tous les statuts</option>
-          <option value="disponible">Disponible</option>
-          <option value="occupé">Occupé</option>
-        </Select>
-      </div>
-
-      {/* ✅ Liste des équipements (checkbox) */}
-      <div className="flex flex-wrap gap-4 mb-6">
+          className="w-full md:w-1/3 border border-border p-2 rounded-lg shadow-sm"
+        ></Select>
         {availableEquipments.map((equipment) => (
-          <label key={equipment} className="flex items-center space-x-2">
+          <label
+            key={equipment}
+            className="flex items-center space-x-2 text-primary"
+          >
             <Checkbox
               checked={selectedEquipments.includes(equipment)}
               onCheckedChange={(checked) => {
                 const newEquipments = checked
                   ? [...selectedEquipments, equipment]
                   : selectedEquipments.filter((e) => e !== equipment);
-
                 updateFilters({
                   capacity: capacityFilter,
                   status: statusFilter,
@@ -153,16 +143,23 @@ const ClassroomListPage = () => {
       </div>
 
       {/* ✅ Liste des salles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {isLoading ? (
-          <p className="text-center text-gray-500">Chargement des salles...</p>
+          <p className="text-center text-muted-foreground">
+            Chargement des salles...
+          </p>
         ) : classrooms.length > 0 ? (
           classrooms.map((room) => (
-            <Card key={room.id} className="shadow-md border rounded-lg p-4">
+            <Card
+              key={room.id}
+              className="shadow-lg border border-border rounded-xl p-6 bg-card transition-transform duration-300 hover:scale-105"
+            >
               <CardHeader>
-                <CardTitle className="text-xl">{room.name}</CardTitle>
+                <CardTitle className="text-xl font-bold text-primary">
+                  {room.name}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="text-foreground">
                 <p>
                   <strong>Capacité :</strong> {room.capacity} personnes
                 </p>
@@ -174,7 +171,7 @@ const ClassroomListPage = () => {
                   <strong>Statut :</strong> {room.status || "Indisponible"}
                 </p>
                 <Button
-                  className="mt-4 w-full"
+                  className="mt-6 w-full bg-primary text-primary-foreground font-semibold rounded-lg py-2 transition-all duration-300 hover:scale-105"
                   onClick={() => navigate(`/classroom/${room.id}`)}
                 >
                   Voir les détails
@@ -183,7 +180,7 @@ const ClassroomListPage = () => {
             </Card>
           ))
         ) : (
-          <p className="text-center text-gray-500">
+          <p className="text-center text-muted-foreground">
             Aucune salle ne correspond aux critères.
           </p>
         )}

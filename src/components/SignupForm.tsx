@@ -49,7 +49,7 @@ const SignupForm = () => {
     );
 
     if (success) {
-      toast.success("🎉 Inscription réussie ! Connexion...");
+      toast.success("🎉 Inscription réussie !");
       const token = await signin(data.email, data.password);
       if (token) {
         navigate("/classroom");
@@ -57,7 +57,7 @@ const SignupForm = () => {
         setError("Échec de l'authentification.");
       }
     } else {
-      toast.error("❌ Échec de l'inscription.");
+      toast.error(" Échec de l'inscription.");
       setError("Échec de l'inscription.");
     }
   };
